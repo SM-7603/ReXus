@@ -47,4 +47,6 @@ Managing research collaborations is complex, often replying on fragmented tools.
 ## Database Schema & ERDs
 
 - ![ERD version 1](./Database-ERD-crows-foot-v1.png)
-
+    - ERD v1
+- ![ERD version 2](./ERD-v2.png)
+    - ERD v2
