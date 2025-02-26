@@ -15,10 +15,7 @@ class RegisterUserView(generics.CreateAPIView):
     permission_classes = [permissions.AllowAny] # public access...
 
     def perform_create(self, serializer):
-        """Hash password before saving user"""
-        user = serializer.save()
-        user.set_password(user.password) # hash the password
-        user.save()
+        serializer.save() # let serializer handle the hashing
 
 # User list view - to view all users for faculties / admin
 class UserListView(generics.ListAPIView):
