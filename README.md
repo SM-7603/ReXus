@@ -61,6 +61,8 @@ Access the server at `http://127.0.0.1:8000`
 
 ## API Testing & Expected Results
 
+---
+
 ### Authentication
 
 #### Registering users
@@ -118,6 +120,8 @@ curl -X POST http://127.0.0.1:8000/api/users/login/ \
   }
 }
 ```
+
+---
 
 ### Project Management
 
@@ -200,6 +204,8 @@ curl -X GET http://127.0.0.1:8000/api/projects/ \
   }
 ]
 ```
+
+---
 
 ### Test for invalid requests
 
