@@ -5,7 +5,13 @@ from .models import Meeting
 from users.models import User
 
 class MeetingSerializer(serializers.ModelSerializer):
-    faculty = serializers.PrimaryKeyRelatedField(queryset=User.objects.filter(role="faculty"))
+    faculty = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.filter(role="faculty"),
+        error_messages={
+            "does_not_exist": "The faculty ID provided doesn't match any faculty user.",
+            "invalid": "Invalid faculty ID format."
+        }
+    )
     student = serializers.SerializerMethodField()  # Fetch full student details
 
     class Meta:
