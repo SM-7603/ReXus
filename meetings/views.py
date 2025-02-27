@@ -1,5 +1,6 @@
 # meetings/views.py
 
+from users.models import User # get the User model
 from rest_framework import generics, permissions, status, serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -21,10 +22,17 @@ class MeetingListCreateView(generics.ListCreateAPIView):
         return Meeting.objects.none()  # No role, no access
 
     def perform_create(self, serializer):
-        """Ensure only students can request meetings"""
+        """Ensure only students can request meetings & associate the faculty"""
         if self.request.user.role != "student":
             raise serializers.ValidationError("Only students can request meetings")
-        serializer.save(student=self.request.user)
+
+        faculty_id = self.request.data.get("faculty")  # Extract faculty ID from request
+        try:
+            faculty = User.objects.get(id=faculty_id, role="faculty")  # Validate faculty exists
+        except User.DoesNotExist:
+            raise serializers.ValidationError("Invalid faculty ID")
+
+        serializer.save(student=self.request.user, faculty=faculty)  # Assign faculty + student
 
 class ApproveMeetingView(APIView):
     """Approve a meeting (faculty only)"""

@@ -5,7 +5,7 @@ from .models import Meeting
 from users.models import User
 
 class MeetingSerializer(serializers.ModelSerializer):
-    faculty = serializers.StringRelatedField()  # Faculty is shown as their username
+    faculty = serializers.PrimaryKeyRelatedField(queryset=User.objects.filter(role="faculty"))
     student = serializers.SerializerMethodField()  # Fetch full student details
 
     class Meta:
