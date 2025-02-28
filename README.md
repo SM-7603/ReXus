@@ -205,10 +205,6 @@ curl -X GET http://127.0.0.1:8000/api/projects/ \
 ]
 ```
 
----
-
-### Test for invalid requests
-
 #### Create a project without the required fields (*this should fail*)
 
 - Expected: should return an error -> missing required fields.
@@ -234,7 +230,41 @@ curl -X POST http://127.0.0.1:8000/api/projects/ \
 
 ---
 
-#### Summary of fixes & improvements
+## [ ] TODO: 2025-02-27
+
+### Meeting Management API
+
+#### Requesting a meeting
+
+#### Approving / Rejecting a meeting
+
+##### Approving a meeting
+
+##### Rejecting a meeting
+
+#### Handling Invalid requests
+
+##### Requesting a meeting with a faculty that doesn't exist
+
+##### Sending an invalid JSON request
+
+---
+
+#### Changelog (feature, improvement & fixes summary)
+
+##### 2025-02-27
+
+- Meeting API
+    - Added meeting request api.
+    - Faculty can now approve / reject meeting requests.
+    - Students can only see **their own** meetings, whilst faculties can view all the meetings they oversee.
+    - Clearer error messages have been written.
+- Validation Improvements
+    - Bad JSON requests return detailed paring errors (**TODO**: although the messages could be improved for end-users).
+    - Meetings can't be scheduled without selecting a faculty.
+- Security 
+    - **Only students** can request meetings.
+    - **Only faculty** can approve / reject meetings.
 
 ##### 2025-02-26
 
