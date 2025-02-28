@@ -1,5 +1,7 @@
 # meetings/views.py
 
+import json 
+from django.http import JsonResponse
 from users.models import User # get the User model
 from rest_framework import generics, permissions, status, serializers
 from rest_framework.response import Response
@@ -11,6 +13,17 @@ class MeetingListCreateView(generics.ListCreateAPIView):
     """List all meetings (GET) & allow students to request new meetings (POST)"""
     queryset = Meeting.objects.all()
     serializer_class = MeetingSerializer
+
+    def create(self, request, *args, **kwargs):
+        """Handle JSON parsing errors before django touches it"""
+        try:
+            data = json.loads(request.body) # try to parse the json
+        except json.JSONDecodeError:
+            return JsonResponse(
+                {"error": "Invalid JSON format. Please check your syntax."},
+                status=400
+            )
+        return super().create(request, *args, **kwargs)
 
     def get_queryset(self):
         """Return meetings relevant to the user"""

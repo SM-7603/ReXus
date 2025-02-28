@@ -9,7 +9,7 @@ class MeetingSerializer(serializers.ModelSerializer):
         queryset=User.objects.filter(role="faculty"),
         error_messages={
             "does_not_exist": "The faculty ID provided doesn't match any faculty user.",
-            "invalid": "Invalid faculty ID format."
+            "incorrect_type": "Invalid faculty ID format."
         }
     )
     student = serializers.SerializerMethodField()  # Fetch full student details
