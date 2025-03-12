@@ -250,9 +250,9 @@ curl -X POST http://127.0.0.1:8000/api/projects/ \
 
 ---
 
-#### Changelog (feature, improvement & fixes summary)
+## Changelog (feature, improvement & fixes summary)
 
-##### 2025-02-27
+### 2025-02-27
 
 - Meeting API
     - Added meeting request api.
@@ -260,13 +260,13 @@ curl -X POST http://127.0.0.1:8000/api/projects/ \
     - Students can only see **their own** meetings, whilst faculties can view all the meetings they oversee.
     - Clearer error messages have been written.
 - Validation Improvements
-    - Bad JSON requests return detailed paring errors (**TODO**: although the messages could be improved for end-users).
+    - Bad JSON requests return detailed paring errors.
     - Meetings can't be scheduled without selecting a faculty.
 - Security 
     - **Only students** can request meetings.
     - **Only faculty** can approve / reject meetings.
 
-##### 2025-02-26
+### 2025-02-26
 
 - Fixed Password Hashing Issue
     - Passwords are now securely hashed during registration.
