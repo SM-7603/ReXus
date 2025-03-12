@@ -35,6 +35,32 @@ Managing research collaborations is complex, often replying on fragmented tools.
 pip install -r requirements.txt
 ```
 
+### 1.5 - Redis & Celery setup (for async notifications)
+
+- Install Redis (if not already installed)
+
+```bash
+sudo pacman -Syu redis
+sudo systemctl enable redis
+sudo systemctl start redis
+```
+
+- Verify if redis is running
+
+```bash
+redis-cli ping # expected response = PONG
+```
+
+- Start Celery worker
+
+In the project directory, start celery worker with redis as the broker:
+
+```bash
+celery -A research_collab worker --loglevel=info
+```
+
+> Make sure to run Redis **before** starting celery.
+
 ### 2 - Run Django Server
 
 ```bash
@@ -364,6 +390,10 @@ curl -X POST http://127.0.0.1:8000/api/meetings/ \
 
 ### 2025-03-11
 
+- Asynchronous Notifications
+    - Integrate **Celery** with **Redis** for background task handling.
+    - Email notifications for meeting approvals, rejections & requests now processed asynchronously.
+    - Improved performance for API calls related to meeting management.
 - Email Notifications Added
     - Faculty receives an email when a student requests a meeting.
     - Students receive an email when their meeting request is approved or rejected.
