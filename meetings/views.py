@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Meeting
 from .serializers import MeetingSerializer, ApproveRejectMeetingSerializer
+from notifications.utils import send_email_notification  # Import the notification util
 
 class MeetingListCreateView(generics.ListCreateAPIView):
     """List all meetings (GET) & allow students to request new meetings (POST)"""
@@ -45,7 +46,13 @@ class MeetingListCreateView(generics.ListCreateAPIView):
         except User.DoesNotExist:
             raise serializers.ValidationError("Invalid faculty ID")
 
-        serializer.save(student=self.request.user, faculty=faculty)  # Assign faculty + student
+        # save meeting & trigger email notification
+        meeting = serializer.save(student=self.request.user, faculty=faculty)  # Assign faculty + student
+
+        # send email to faculty
+        subject = f"New Meeting Request from {self.request.user.username}"
+        message = f"You have a new meeting request scheduled for {meeting.date} at {meeting.time}."
+        send_email_notification(subject, message, [faculty.email])
 
 class ApproveMeetingView(APIView):
     """Approve a meeting (faculty only)"""
