@@ -9,6 +9,9 @@ from rest_framework.views import APIView
 from .models import Meeting
 from .serializers import MeetingSerializer, ApproveRejectMeetingSerializer
 from notifications.utils import send_email_notification  # Import the notification util
+from .utils import send_meeting_notification_email
+from django.conf import settings
+from django.core.mail import send_mail
 
 class MeetingListCreateView(generics.ListCreateAPIView):
     """List all meetings (GET) & allow students to request new meetings (POST)"""
@@ -64,6 +67,12 @@ class ApproveMeetingView(APIView):
             serializer = ApproveRejectMeetingSerializer(meeting, data={"status": "approved"}, partial=True)
             if serializer.is_valid():
                 serializer.save()
+                
+                # send email notification to student
+                subject = "Your Meeting Request Has Been Approved"
+                message = f"Hello {meeting.student.username},\n\nYour meeting request with {meeting.faculty.username} on {meeting.date} at {meeting.time} has been approved."
+                send_meeting_notification_email(subject, message, meeting.student.email)
+
                 return Response({"message": "Meeting approved successfully"})
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Meeting.DoesNotExist:
@@ -79,6 +88,12 @@ class RejectMeetingView(APIView):
             serializer = ApproveRejectMeetingSerializer(meeting, data={"status": "rejected"}, partial=True)
             if serializer.is_valid():
                 serializer.save()
+
+                # send email notification to student
+                subject = "Your meeting request has been rejected"
+                message = f"Hello {meeting.student.username},\n\nUnfortunately, your request with {meeting.faculty.username} on {meeting.date} at {meeting.time} was denied."
+                send_meeting_notification_email(subject, message, meeting.student.email)
+
                 return Response({"message": "Meeting rejected successfully"})
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Meeting.DoesNotExist:
