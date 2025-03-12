@@ -230,27 +230,148 @@ curl -X POST http://127.0.0.1:8000/api/projects/ \
 
 ---
 
-## [ ] TODO: 2025-02-27
-
 ### Meeting Management API
 
 #### Requesting a meeting
 
-#### Approving / Rejecting a meeting
+- Expected: A student can request a meeting with a faculty member.
+- Actual: Successful request triggers an email notification.
 
-##### Approving a meeting
+```bash
+curl -X POST http://127.0.0.1:8000/api/meetings/ \
+-H "Authorization: Bearer $STUDENT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "faculty": 1,
+    "date": "2025-03-12",
+    "time": "13:00:00"
+}'
+```
 
-##### Rejecting a meeting
+- result:
 
-#### Handling Invalid requests
+```bash
+{
+  "id": 4,
+  "faculty": 1,
+  "student": {
+    "id": 3,
+    "username": "student2",
+    "email": "student2@example.com"
+  },
+  "date": "2025-03-12",
+  "time": "13:00:00",
+  "status": "pending"
+}
+```
 
-##### Requesting a meeting with a faculty that doesn't exist
+- Faculty receives an email notification:
 
-##### Sending an invalid JSON request
+> Subject: New Meeting Request from student2
+> Message: You have a new meeting request scheduled for 2025-03-12 at 13:00:00.
+
+#### Approving / Rejecting a Meeting
+
+##### Approving a Meeting
+
+```bash
+curl -X PATCH http://127.0.0.1:8000/api/meetings/4/approve/ \
+-H "Authorization: Bearer $FACULTY_TOKEN" \
+-H "Content-Type: application/json"
+```
+
+- Response:
+
+```bash
+{
+  "message": "Meeting approved successfully"
+}
+```
+
+- Student receives an email notification:
+
+> Subject: Your Meeting Request Has Been Approved
+> Message: Hello student2, your meeting request with faculty1 on 2025-03-12 at 13:00:00 has been approved.
+
+##### Rejecting a Meeting
+
+```bash
+curl -X PATCH http://127.0.0.1:8000/api/meetings/4/reject/ \
+-H "Authorization: Bearer $FACULTY_TOKEN" \
+-H "Content-Type: application/json"
+```
+
+- Response:
+
+```bash
+{
+  "message": "Meeting rejected successfully"
+}
+```
+
+- Student receives an email notification:
+
+> Subject: Your Meeting Request Has Been Rejected
+> Message: Hello student2, unfortunately, your request with faculty1 on 2025-03-12 at 13:00:00 was denied.
+
+#### Handling Invalid Requests
+
+##### Requesting a Meeting with a Non-Existent Faculty
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/meetings/ \
+-H "Authorization: Bearer $STUDENT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "faculty": 999,
+    "date": "2025-03-23",
+    "time": "16:00:00"
+}'
+```
+
+- Response:
+
+```bash
+{
+  "faculty": ["The faculty ID provided doesn't match any faculty user."]
+}
+```
+
+#### Sending an Invalid JSON Request
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/meetings/ \
+-H "Authorization: Bearer $STUDENT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "faculty": "$",
+    "date": "2025-03-23",
+    "time": "16:00:00"
+}'
+```
+
+- Response:
+
+```bash
+{
+  "faculty": ["Incorrect type. Expected pk value, received str."]
+}
+```
 
 ---
 
 ## Changelog (feature, improvement & fixes summary)
+
+### 2025-03-11
+
+- Email Notifications Added
+    - Faculty receives an email when a student requests a meeting.
+    - Students receive an email when their meeting request is approved or rejected.
+    - Configured SMTP settings for secure email delivery.
+- Meeting API Enhancements
+    - Clearer validation error messages.
+    - JSON parsing errors now handled gracefully.
+    - Faculty approval/rejection functionality fully tested.
 
 ### 2025-02-27
 
