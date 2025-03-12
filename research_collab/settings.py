@@ -167,3 +167,13 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": True,
 }
 
+# research_collab/settings.py
+
+# Email Configuration 
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "rexus.notifications@gmail.com"  # Replace with your Gmail
+EMAIL_HOST_PASSWORD = "rlgf upxh ikyw qhno"  # Replace with the App Password
+DEFAULT_FROM_EMAIL = "ReXus Notifications <rexus.notifications@gmail.com>"
