@@ -4,6 +4,8 @@ from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import PermissionDenied, NotAuthenticated
 from .models import ResearchProject
 from .serializers import ResearchProjectSerializer, AssignStudentSerializer
 from users.models import User
@@ -11,14 +13,27 @@ from users.models import User
 class ResearchProjectListCreateView(generics.ListCreateAPIView):
     queryset = ResearchProject.objects.all()
     serializer_class = ResearchProjectSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        """Restrict access based on role"""
+        user = self.request.user
+
+        if user.role == "faculty":
+            return ResearchProject.objects.filter(faculty=user)
+        elif user.role == "student":
+            return ResearchProject.objects.filter(students=user)
+        elif user.role == "admin":
+            return ResearchProject.objects.all()
+        return ResearchProject.objects.none()
 
     def perform_create(self, serializer):
         """Ensure only faculty can create projects"""
         if not self.request.user.is_authenticated:
-            return Response({"error": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+            raise NotAuthenticated("Authentication credentials were not provided.")
 
-        if not hasattr(self.request.user, "role") or self.request.user.role != "faculty":
-            return Response({"error": "Only faculty can create projects"}, status=status.HTTP_403_FORBIDDEN)
+        if self.request.user.role != "faculty":
+            raise PermissionDenied("Only faculty can create projects.")
 
         serializer.save(faculty=self.request.user)
 
