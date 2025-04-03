@@ -184,3 +184,7 @@ CELERY_TASK_SERIALIZER = "json"
 
 # make sure 'broker' retries on startup (for future celery versions)
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+# Media files (for uploads)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

@@ -3,6 +3,8 @@
 from django.contrib import admin
 from django.urls import path, include
 from django.http import JsonResponse
+from django.conf import settings
+from django.conf.urls.static import static
 
 def api_home(request):
     return JsonResponse({
@@ -10,6 +12,8 @@ def api_home(request):
         "endpoints": {
             "Users": "/api/users/",
             "Projects": "/api/projects/",
+            "Meetings": "/api/meetings/",
+            "Publications": "/api/publications/",
             "Admin Panel": "/admin/",
         }
     })
@@ -23,3 +27,4 @@ urlpatterns = [
     path('api/publications/', include('publications.urls')),
 ]
 
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
