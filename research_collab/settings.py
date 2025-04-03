@@ -76,12 +76,12 @@ WSGI_APPLICATION = 'research_collab.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'research_db',
-        'USER': 'research_user',
-        'PASSWORD': 'securepassword',
+        'USER': 'shubham',
+        'PASSWORD': 'shubham123',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '', # default = 5432
     }
 }
 
