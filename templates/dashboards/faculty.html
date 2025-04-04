@@ -1,0 +1,31 @@
+<!-- templates/dashboards/faculty.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4">Faculty Dashboard</h2>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <h5 class="card-title">Research Projects</h5>
+    <p class="card-text">Create, assign, and manage student research projects.</p>
+    <a href="/projects/" class="btn btn-primary">Manage Projects</a>
+  </div>
+</div>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <h5 class="card-title">Publications</h5>
+    <p class="card-text">Upload and track research papers associated with your projects.</p>
+    <a href="/publications/" class="btn btn-success">Manage Publications</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Meetings</h5>
+    <p class="card-text">View and respond to meeting requests from students.</p>
+    <a href="/meetings/" class="btn btn-secondary">Review Meetings</a>
+  </div>
+</div>
+{% endblock %}

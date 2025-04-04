@@ -3,6 +3,10 @@
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.contrib.auth import logout
+from django.contrib import messages
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from .models import User
@@ -48,3 +52,21 @@ class MeView(APIView):
     def get(self, request):
         return Response(UserSerializer(request.user).data)
 
+@login_required
+def dashboard_view(request):
+    """Redirect to a dashboard template based on user role"""
+    role = request.user.role
+    if role == "student":
+        return render(request, "dashboards/student.html")
+    elif role == "faculty":
+        return render(request, "dashboards/faculty.html")
+    elif role == "admin":
+        return redirect("/admin/")
+    else:
+        return redirect("/")
+
+def logout_view(request):
+    """logout view"""
+    logout(request)
+    messages.success(request, "You have been logged out.")
+    return redirect("/")

@@ -1,0 +1,23 @@
+<!-- templates/dashboards/student.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4">Student Dashboard</h2>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <h5 class="card-title">My Projects</h5>
+    <p class="card-text">View and interact with assigned research projects.</p>
+    <a href="/projects/" class="btn btn-primary">View Projects</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Meetings</h5>
+    <p class="card-text">Schedule or view meetings with your project faculty.</p>
+    <a href="/meetings/" class="btn btn-secondary">Manage Meetings</a>
+  </div>
+</div>
+{% endblock %}
