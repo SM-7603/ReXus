@@ -14,6 +14,7 @@ def api_home(request):
             "Projects": "/api/projects/",
             "Meetings": "/api/meetings/",
             "Publications": "/api/publications/",
+            "Notifications": "/api/notifications/",
             "Admin Panel": "/admin/",
         }
     })
@@ -25,6 +26,7 @@ urlpatterns = [
     path('api/projects/', include('projects.urls')),
     path('api/meetings/', include('meetings.urls')),
     path('api/publications/', include('publications.urls')),
+    path('api/notifications/', include('notifications.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
