@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4">My Projects</h2>
+
+{% if projects %}
+  {% for project in projects %}
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">{{ project.title }}</h5>
+      <p class="card-text">{{ project.description }}</p>
+      <p class="text-muted">Supervised by: {{ project.faculty.get_full_name }}</p>
+      <p class="text-muted">Duration: {{ project.start_date }} to {{ project.end_date }}</p>
+    </div>
+  </div>
+  {% endfor %}
+{% else %}
+  <p>No projects assigned yet.</p>
+{% endif %}
+
+{% endblock %}

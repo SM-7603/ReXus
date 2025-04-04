@@ -1,0 +1,23 @@
+<!-- templates/projects/faculty_projects.html -->
+
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4">Manage Projects</h2>
+
+{% if projects %}
+  {% for project in projects %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">{{ project.title }}</h5>
+        <p class="card-text">{{ project.description|truncatewords:30 }}</p>
+        <p class="text-muted">Created on {{ project.created_at|date:"M d, Y" }}</p>
+        <!-- Placeholder for future buttons -->
+        <a href="#" class="btn btn-outline-secondary disabled">Edit (Coming Soon)</a>
+      </div>
+    </div>
+  {% endfor %}
+{% else %}
+  <p>You haven't created any research projects yet.</p>
+{% endif %}
+
+{% endblock %}
