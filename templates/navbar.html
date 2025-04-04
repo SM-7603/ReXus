@@ -1,0 +1,39 @@
+<!-- templates/navbar.html -->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">ReXus</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarNav" aria-controls="navbarNav"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      {% if user.is_authenticated %}
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/users/dashboard/">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a href="/users/logout/" class="btn btn-outline-danger ms-auto">Logout</a>
+          </li>
+          {% if user.role == "faculty" %}
+            <li class="nav-item"><a class="nav-link" href="/projects/">My Projects</a></li>
+            <li class="nav-item"><a class="nav-link" href="/meetings/">Meetings</a></li>
+            <li class="nav-item"><a class="nav-link" href="/publications/">Publications</a></li>
+          {% elif user.role == "student" %}
+            <li class="nav-item"><a class="nav-link" href="/projects/">My Project</a></li>
+            <li class="nav-item"><a class="nav-link" href="/meetings/">Meetings</a></li>
+          {% elif user.role == "admin" %}
+            <li class="nav-item"><a class="nav-link" href="/admin/">Admin</a></li>
+          {% endif %}
+        </ul>
+        <span class="navbar-text">
+          Logged in as {{ user.username }} ({{ user.role }})
+        </span>
+      </div>
+      {% endif %}
+    </div>
+  </nav>
+  

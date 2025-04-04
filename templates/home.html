@@ -1,0 +1,15 @@
+<!-- templates/home.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="text-center">
+    <h1 class="display-5">Welcome to ReXus</h1>
+    <p class="lead">A portal for research collaboration between faculty and students.</p>
+    {% if user.is_authenticated %}
+        <a href="/dashboard/" class="btn btn-primary mt-3">Go to Dashboard</a>
+    {% else %}
+        <p class="text-muted">Please log in via the API or admin panel for now.</p>
+    {% endif %}
+</div>
+{% endblock %}
